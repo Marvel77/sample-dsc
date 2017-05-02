@@ -42,6 +42,12 @@ Configuration InstallApachePhp
 		    Destination = "C:\"
 		    DependsOn = "[Script]DownloadApacheHttpd"
 		} 
+		File DeleteHttpdConf
+        {
+            Ensure = "Absent"  
+            DestinationPath = "C:\Apache24\conf\httpd.conf"
+            DependsOn = "[Archive]UnzipApacheHttpd"
+        }
 		Script DownloadPHP
 	    {
 	        TestScript = {
@@ -72,21 +78,14 @@ Configuration InstallApachePhp
 	            Invoke-WebRequest $source -OutFile $dest
 	        }
 	        GetScript = {@{Result = "DownloadHttpdConf"}}
-	        DependsOn = "[Archive]UnzipPHP"
-	    }
-	    File DeleteHttpdConf
-        {
-            Ensure = "Absent"            
-            DestinationPath = "C:\Apache24\conf\httpd.conf"
-            Force = $true
-            DependsOn = "[Script]DownloadHttpdConf"
-        }
+	        DependsOn = "[Script]UnzipPHP"
+	    }	    
         File CopyHttpdConf
         {
-            Ensure = "Present"
-            SourcePath = "C:\WindowsAzure\httpd.conf"
+            Ensure = "Present"  
+            SourcePath = "C:\WindowsAzure\httpd.conf"          
             DestinationPath = "C:\Apache24\conf\httpd.conf"
-            DependsOn = "[File]DeleteHttpdConf"
+            DependsOn = "[Script]DownloadHttpdConf"
         }
         Script DownloadPHPini
 	    {
