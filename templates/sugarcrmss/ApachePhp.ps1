@@ -58,8 +58,21 @@ Configuration InstallApachePhp
 	    Archive UnzipPHP{
 		    Ensure = "Present"  
 		    Path = "C:\WindowsAzure\php-5.6.30-Win32-VC11-x64.zip"
-		    Destination = "C:\"
+		    Destination = "C:\php"
 		    DependsOn = "[Script]DownloadPHP"
 		}   
+		Script UpdateHttpdConf
+	    {
+	        TestScript = {
+	            Test-Path "C:\Apache24\conf\httpd.conf"
+	        }
+	        SetScript ={https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/conf/httpd.conf"
+	            $dest = "C:\Apache24\conf\httpd.conf"
+	            Invoke-WebRequest $source -OutFile $dest
+	        }
+	        GetScript = {@{Result = "UpdateHttpdConf"}}
+	        DependsOn = "[Archive]UnzipPHP"
+	    }
+
 	}
 }
