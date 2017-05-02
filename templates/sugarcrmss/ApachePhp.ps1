@@ -61,19 +61,26 @@ Configuration InstallApachePhp
 		    Destination = "C:\php"
 		    DependsOn = "[Script]DownloadPHP"
 		}   
-		Script UpdateHttpdConf
+		Script DownloadHttpdConf
 	    {
 	        TestScript = {
-	            Test-Path "C:\Apache24\conf\httpd.conf"
+	            Test-Path "C:\WindowsAzure\httpd.conf"
 	        }
 	        SetScript = {
 	        	$source = "https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/conf/httpd.conf"
-	            $dest = "C:\Apache24\conf\httpd.conf"
+	            $dest = "C:\WindowsAzure\httpd.conf"
 	            Invoke-WebRequest $source -OutFile $dest
 	        }
-	        GetScript = {@{Result = "UpdateHttpdConf"}}
+	        GetScript = {@{Result = "DownloadHttpdConf"}}
 	        DependsOn = "[Archive]UnzipPHP"
 	    }
-
+	    File OverwriteHttpdConf
+        {
+            Ensure = "Present"
+            SourcePath = "C:\WindowsAzure\httpd.conf"
+            DestinationPath = "C:\Apache24\conf\httpd.conf"
+            Force = $true
+            DependsOn = "[Script]DownloadHttpdConf"
+        }
 	}
 }
