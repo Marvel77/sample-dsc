@@ -83,7 +83,7 @@
                                     "settings": {
                                         "configuration": {
                                             "url": "https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/ApachePhp.ps1.zip",
-                                            "script": "SimpleConfig.ps1",
+                                            "script": "ApachePhp.ps1",
                                             "function": "InstallApachePhp"
                                         }
                                     },

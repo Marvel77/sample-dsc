@@ -1,0 +1,333 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachineScaleSets_sugarcrmss_name": {
+            "defaultValue": "sugarcrmss",
+            "type": "String"
+        },
+        "loadBalancers_sugarcrmssLb_name": {
+            "defaultValue": "sugarcrmssLb",
+            "type": "String"
+        },
+        "publicIPAddresses_ip01_name": {
+            "defaultValue": "ip01",
+            "type": "String"
+        },
+        "virtualNetworks_sugarcrmssVnet_name": {
+            "defaultValue": "sugarcrmssVnet",
+            "type": "String"
+        },
+        "storageAccounts_2wfgrviys3cicsugarcrmssa_name": {
+            "defaultValue": "2wfgrviys3cicsugarcrmssa",
+            "type": "String"
+        },
+        "storageAccounts_2wtt2k5u23pbosugarcrmssa_name": {
+            "defaultValue": "2wtt2k5u23pbosugarcrmssa",
+            "type": "String"
+        },
+        "storageAccounts_4re6n4zpwnpdssugarcrmssa_name": {
+            "defaultValue": "4re6n4zpwnpdssugarcrmssa",
+            "type": "String"
+        },
+        "storageAccounts_crudtqfo6wsmmsugarcrmssa_name": {
+            "defaultValue": "crudtqfo6wsmmsugarcrmssa",
+            "type": "String"
+        },
+        "storageAccounts_rodb5gpl4w2fusugarcrmssa_name": {
+            "defaultValue": "rodb5gpl4w2fusugarcrmssa",
+            "type": "String"
+        },
+        "loadBalancers_sugarcrmssLb_id": {
+            "defaultValue": "/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Network/loadBalancers/sugarcrmssLb/frontendIPConfigurations/LoadBalancerFrontEnd",
+            "type": "String"
+        },
+        "loadBalancers_sugarcrmssLb_id_1": {
+            "defaultValue": "/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Network/loadBalancers/sugarcrmssLb/frontendIPConfigurations/LoadBalancerFrontEnd",
+            "type": "String"
+        },
+        "adminPassword": {
+          "defaultValue": "nqc-hNt-5vw-M7U",
+          "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Compute/virtualMachineScaleSets/sugarcrmss'.",
+            "type": "Microsoft.Compute/virtualMachineScaleSets",
+            "sku": {
+                "name": "Standard_D1_v2",
+                "tier": "Standard",
+                "capacity": 1
+            },
+            "name": "[parameters('virtualMachineScaleSets_sugarcrmss_name')]",
+            "apiVersion": "2016-04-30-preview",
+            "location": "southeastasia",
+            "properties": {
+                "singlePlacementGroup": true,
+                "upgradePolicy": {
+                    "mode": "Manual"
+                },
+                "virtualMachineProfile": {
+                    "extensionProfile": {
+                        "extensions": [
+                            {
+                                "name": "Microsoft.Powershell.DSC",
+                                "properties": {
+                                    "publisher": "Microsoft.Powershell",
+                                    "type": "DSC",
+                                    "typeHandlerVersion": "2.20",
+                                    "autoUpgradeMinorVersion": false,
+                                    "forceUpdateTag": "2.20",
+                                    "settings": {
+                                        "configuration": {
+                                            "url": "https://raw.githubusercontent.com/marvel77/sample-dsc/templates/sugarcrmss/SimpleConfig.zip",
+                                            "script": "SimpleConfig.ps1",
+                                            "function": "FileResourceDemo"
+                                        },
+                                        "configurationArguments": {
+                                            "nodeName": "localhost"
+                                        }
+                                    },
+                                    "protectedSettings": {
+                                        "configurationUrlSasToken": ""
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "osProfile": {
+                        "computerNamePrefix": "sugarcrms",
+                        "adminUsername": "[parameters('virtualMachineScaleSets_sugarcrmss_name')]",
+                        "adminPassword": "[parameters('adminPassword')]",
+                        "windowsConfiguration": {
+                            "provisionVMAgent": true,
+                            "enableAutomaticUpdates": true
+                        },
+                        "secrets": []
+                    },
+                    "storageProfile": {
+                        "osDisk": {
+                            "vhdContainers": [
+                                "https://rodb5gpl4w2fusugarcrmssa.blob.core.windows.net/sugarcrmsvhd",
+                                "https://2wtt2k5u23pbosugarcrmssa.blob.core.windows.net/sugarcrmsvhd",
+                                "https://2wfgrviys3cicsugarcrmssa.blob.core.windows.net/sugarcrmsvhd",
+                                "https://crudtqfo6wsmmsugarcrmssa.blob.core.windows.net/sugarcrmsvhd",
+                                "https://4re6n4zpwnpdssugarcrmssa.blob.core.windows.net/sugarcrmsvhd"
+                            ],
+                            "name": "sugarcrmsosdisk",
+                            "createOption": "FromImage",
+                            "caching": "ReadWrite"
+                        },
+                        "imageReference": {
+                            "publisher": "MicrosoftWindowsServer",
+                            "offer": "WindowsServer",
+                            "sku": "2012-R2-Datacenter",
+                            "version": "latest"
+                        }
+                    },
+                    "networkProfile": {
+                        "networkInterfaceConfigurations": [
+                            {
+                                "name": "[concat(parameters('virtualMachineScaleSets_sugarcrmss_name'),'Nic')]",
+                                "properties": {
+                                    "primary": true,
+                                    "ipConfigurations": [
+                                        {
+                                            "name": "[concat(parameters('virtualMachineScaleSets_sugarcrmss_name'),'IpConfig')]",
+                                            "properties": {
+                                                "subnet": {
+                                                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_sugarcrmssVnet_name')), '/subnets/default')]"
+                                                },
+                                                "loadBalancerBackendAddressPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_sugarcrmssLb_name')), '/backendAddressPools/bepool')]"
+                                                    }
+                                                ],
+                                                "loadBalancerInboundNatPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_sugarcrmssLb_name')), '/inboundNatPools/natpool')]"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "overprovision": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_rodb5gpl4w2fusugarcrmssa_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_2wtt2k5u23pbosugarcrmssa_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_2wfgrviys3cicsugarcrmssa_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_crudtqfo6wsmmsugarcrmssa_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_4re6n4zpwnpdssugarcrmssa_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_sugarcrmssVnet_name'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_sugarcrmssLb_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Network/loadBalancers/sugarcrmssLb'.",
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "[parameters('loadBalancers_sugarcrmssLb_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "southeastasia",
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LoadBalancerFrontEnd",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_ip01_name'))]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "bepool"
+                    }
+                ],
+                "loadBalancingRules": [],
+                "probes": [],
+                "inboundNatRules": [],
+                "outboundNatRules": [],
+                "inboundNatPools": [
+                    {
+                        "name": "natpool",
+                        "properties": {
+                            "frontendPortRangeStart": 50000,
+                            "frontendPortRangeEnd": 50119,
+                            "backendPort": 3389,
+                            "protocol": "Tcp",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_sugarcrmssLb_id_1')]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_ip01_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Network/publicIPAddresses/ip01'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_ip01_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "southeastasia",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "sugarcrm"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Network/virtualNetworks/sugarcrmssVnet'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_sugarcrmssVnet_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "southeastasia",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/21"
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Storage/storageAccounts/2wfgrviys3cicsugarcrmssa'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_2wfgrviys3cicsugarcrmssa_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "southeastasia",
+            "tags": {},
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Storage/storageAccounts/2wtt2k5u23pbosugarcrmssa'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_2wtt2k5u23pbosugarcrmssa_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "southeastasia",
+            "tags": {},
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Storage/storageAccounts/4re6n4zpwnpdssugarcrmssa'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_4re6n4zpwnpdssugarcrmssa_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "southeastasia",
+            "tags": {},
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Storage/storageAccounts/crudtqfo6wsmmsugarcrmssa'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_crudtqfo6wsmmsugarcrmssa_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "southeastasia",
+            "tags": {},
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/5c631901-2bf5-4c07-9aab-015e7dde1934/resourceGroups/sugarcrmgrp/providers/Microsoft.Storage/storageAccounts/rodb5gpl4w2fusugarcrmssa'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_rodb5gpl4w2fusugarcrmssa_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "southeastasia",
+            "tags": {},
+            "properties": {},
+            "dependsOn": []
+        }
+    ]
+}
