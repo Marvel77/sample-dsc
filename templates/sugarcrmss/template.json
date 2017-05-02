@@ -82,9 +82,9 @@
                                     "forceUpdateTag": "2.20",
                                     "settings": {
                                         "configuration": {
-                                            "url": "https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/SimpleConfig.zip",
+                                            "url": "https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/ApachePhp.ps1.zip",
                                             "script": "SimpleConfig.ps1",
-                                            "function": "FileResourceDemo"
+                                            "function": "InstallApachePhp"
                                         }
                                     },
                                     "protectedSettings": {
