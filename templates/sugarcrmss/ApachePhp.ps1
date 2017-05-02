@@ -14,6 +14,15 @@ Configuration InstallApachePhp
 	        }
 	        GetScript = {@{Result = "DownloadVisualCpp"}}
 	    }
+	    Package InstallVisualCpp
+	    {
+	        Ensure = "Present"  
+	        Path  = "C:\WindowsAzure\vcredist_x64.exe"
+	        Name = "Microsoft Visual C++ 2012 Redistributable (x64) - 11.0.61030"
+	        ProductId = "{CF2BEA3C-26EA-32F8-AA9B-331F7E34BA97}"
+	        Arguments = "/install /passive /quiet /norestart"
+	        DependsOn = "[Script]DownloadVisualCpp"
+	    }
 	    
 
 	}
