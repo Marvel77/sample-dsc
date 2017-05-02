@@ -80,6 +80,7 @@ Configuration InstallApachePhp
             SourcePath = "C:\WindowsAzure\httpd.conf"
             DestinationPath = "C:\Apache24\conf\httpd.conf"
             Force = $true
+            MatchSource = $true
             DependsOn = "[Script]DownloadHttpdConf"
         }
 	}
