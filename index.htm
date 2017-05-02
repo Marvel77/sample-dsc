@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://onekstorage.blob.core.windows.net/test/index.html -->
+<html lang="en"><script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script><script type="text/javascript" src="chrome-extension://kajfghlhfkcocafkcjlajldicbikpgnp/catcher.js"><!-- script injected by Request Maker --></script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v4-alpha.getbootstrap.com/favicon.ico">
+
+    <title>OneK Serverless App</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://v4-alpha.getbootstrap.com/examples/narrow-jumbotron/narrow-jumbotron.css" rel="stylesheet">
+  </head>
+
+  <body cz-shortcut-listen="true">
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills float-right">
+            <li class="nav-item">
+              <a class="nav-link active" href="https://onekay.blob.core.windows.net/onekaybs/index.htm#">Home <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">One Knowledge</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1 class="display-3">Serverless App</h1>
+        <p class="lead">The Serverless Application Mode provide a simplified way of defining the API Gateway APIs.</p>
+        <p><a class="btn btn-lg btn-success" href="https://onekay.blob.core.windows.net/onekaybs/index.htm#" role="button">getJSON Data</a></p>
+      </div>
+
+      <div class="row marketing">
+          <code id="showData"></code>
+      </div>
+
+      <footer class="footer">
+        <p>© Company 2017</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <!-- JavaScript -->
+    <script>
+        $('.btn').click(function(){
+            $.getJSON('http://52.187.118.67:8080/', function(response) {
+                $('#showData').html(JSON.stringify(response));
+            });
+        })
+    </script>
+
+
+<div id="main-quick-drop-zone"><div><div class="q-dropzone-container" style="display: none">
+  <span class="q-dropzone-message">Drag &amp; drop the file into a folder box</span>
+  <table class="q-dropzone-folders-container"><tbody><tr class="q-folder-row"><td>
+  <div class="q-folder-content">
+    <div class="q-folder-radius">
+      /
+    </div>
+  </div>
+</td></tr></tbody></table>
+</div></div></div><div id="main-files-upload-zone"><div><div class="q-files-container" style="display: none">
+  <div class="q-toolbar">
+    <div class="q-message">
+      <div class="q-loading"></div>
+      <span class="q-share-link-message">Share link successfully copied to clipboard</span>
+    </div>
+    <div class="q-icon-close"></div>
+    <div class="q-icon-clear"></div>
+  </div>
+  <div class="q-clear-line"></div>
+  <div class="q-files"></div>
+</div></div></div></body></html>

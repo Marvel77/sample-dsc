@@ -1,0 +1,213 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Redis_onekaycache_name": {
+            "defaultValue": "onekaycache",
+            "type": "String"
+        },
+        "namespaces_onekayeh_name": {
+            "defaultValue": "onekayeh",
+            "type": "String"
+        },
+        "namespaces_onekaysb_name": {
+            "defaultValue": "onekaysb",
+            "type": "String"
+        },
+        "servers_onekaycrmdb_name": {
+            "defaultValue": "onekaycrmdb",
+            "type": "String"
+        },
+        "servers_onekaydb_name": {
+            "defaultValue": "onekaydb",
+            "type": "String"
+        },
+        "storageAccounts_onekay_name": {
+            "defaultValue": "onekay",
+            "type": "String"
+        },
+        "AuthorizationRules_RootManageSharedAccessKey_name": {
+            "defaultValue": "onekayeh/RootManageSharedAccessKey",
+            "type": "String"
+        },
+        "AuthorizationRules_RootManageSharedAccessKey_name_1": {
+            "defaultValue": "onekaysb/RootManageSharedAccessKey",
+            "type": "String"
+        },
+        "databases_master_name": {
+            "defaultValue": "onekaycrmdb/master",
+            "type": "String"
+        },
+        "databases_onekaycrmdb_name": {
+            "defaultValue": "onekaycrmdb/onekaycrmdb",
+            "type": "String"
+        },
+        "firewallRules_AllowAllWindowsAzureIps_name": {
+            "defaultValue": "onekaycrmdb/AllowAllWindowsAzureIps",
+            "type": "String"
+        },
+        "databases_master_name_1": {
+            "defaultValue": "onekaydb/master",
+            "type": "String"
+        },
+        "databases_onekeydb_name": {
+            "defaultValue": "onekaydb/onekeydb",
+            "type": "String"
+        },
+        "firewallRules_AllowAllWindowsAzureIps_name_1": {
+            "defaultValue": "onekaydb/AllowAllWindowsAzureIps",
+            "type": "String"
+        },
+
+        "servers_onekaycrmdb_pwd": {
+            "defaultValue": "OneKayCRM01",
+            "type": "String"
+        },
+        "servers_onekaydb_pwd": {
+            "defaultValue": "OneKayDB01",
+            "type": "String"
+        }
+
+    },
+    "variables": {
+        },
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourceGroups/one-key-dev/providers/Microsoft.Cache/Redis/onekaycache'.",
+            "type": "Microsoft.Cache/Redis",
+            "name": "[parameters('Redis_onekaycache_name')]",
+            "apiVersion": "2016-04-01",
+            "location": "Southeast Asia",
+            "tags": {},
+            "properties": {
+                "redisVersion": "3.2",
+                "sku": {
+                    "name": "Basic",
+                    "family": "C",
+                    "capacity": 0
+                },
+                "enableNonSslPort": true,
+                "redisConfiguration": {
+                    "maxclients": "256"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourcegroups/one-key-dev/providers/Microsoft.EventHub/namespaces/onekayeh'.",
+            "type": "Microsoft.EventHub/namespaces",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard"
+            },
+            "kind": "EventHub",
+            "name": "[parameters('namespaces_onekayeh_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "Southeast Asia",
+            "tags": {},
+            "properties": {
+                "serviceBusEndpoint": "[concat('https://', parameters('namespaces_onekayeh_name'),'.servicebus.windows.net:443/')]"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourcegroups/one-key-dev/providers/Microsoft.ServiceBus/namespaces/onekaysb'.",
+            "type": "Microsoft.ServiceBus/namespaces",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard"
+            },
+            "kind": "Messaging",
+            "name": "[parameters('namespaces_onekaysb_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "Southeast Asia",
+            "tags": {},
+            "properties": {
+                "serviceBusEndpoint": "[concat('https://', parameters('namespaces_onekaysb_name'),'.servicebus.windows.net:443/')]"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourceGroups/one-key-dev/providers/Microsoft.Sql/servers/onekaycrmdb'.",
+            "type": "Microsoft.Sql/servers",
+            "kind": "v12.0",
+            "name": "[parameters('servers_onekaycrmdb_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Southeast Asia",
+            "properties": {
+                "administratorLogin": "[concat(parameters('servers_onekaycrmdb_name'),'admin')]",
+                "administratorLoginPassword": "[concat(parameters('servers_onekaycrmdb_pwd'),'OneKayCRM01')]",
+                "version": "12.0"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourceGroups/one-key-dev/providers/Microsoft.Sql/servers/onekaydb'.",
+            "type": "Microsoft.Sql/servers",
+            "kind": "v12.0",
+            "name": "[parameters('servers_onekaydb_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Southeast Asia",
+            "properties": {
+                "administratorLogin": "[concat(parameters('servers_onekaydb_name'),'admin')]",
+                "administratorLoginPassword": "[concat(parameters('servers_onekaydb_pwd'),'OneKayDB01')]",
+                "version": "12.0"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourceGroups/one-key-dev/providers/Microsoft.Storage/storageAccounts/onekay'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "BlobStorage",
+            "name": "[parameters('storageAccounts_onekay_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "southeastasia",
+            "tags": {},
+            "properties": {
+                "accessTier": "Hot"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourcegroups/one-key-dev/providers/Microsoft.EventHub/namespaces/onekayeh/AuthorizationRules/RootManageSharedAccessKey'.",
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "name": "[parameters('AuthorizationRules_RootManageSharedAccessKey_name')]",
+            "apiVersion": "2015-08-01",
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_onekayeh_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/cc8dc6f8-424b-4f67-8bf9-79efdb882c2e/resourcegroups/one-key-dev/providers/Microsoft.ServiceBus/namespaces/onekaysb/AuthorizationRules/RootManageSharedAccessKey'.",
+            "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+            "name": "[parameters('AuthorizationRules_RootManageSharedAccessKey_name_1')]",
+            "apiVersion": "2015-08-01",
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaces_onekaysb_name'))]"
+            ]
+        }
+ 
+    ],
+
+  "outputs": {
+  }
+
+}
