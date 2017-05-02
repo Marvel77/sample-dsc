@@ -47,7 +47,7 @@ Configuration InstallApachePhp
 	        TestScript = {
 	            Test-Path "C:\WindowsAzure\php-5.6.30-Win32-VC11-x64.zip"
 	        }
-	        SetScript ={
+	        SetScript = {
 	            $source = "http://windows.php.net/downloads/releases/php-5.6.30-Win32-VC11-x64.zip"
 	            $dest = "C:\WindowsAzure\php-5.6.30-Win32-VC11-x64.zip"
 	            Invoke-WebRequest $source -OutFile $dest
@@ -66,7 +66,8 @@ Configuration InstallApachePhp
 	        TestScript = {
 	            Test-Path "C:\Apache24\conf\httpd.conf"
 	        }
-	        SetScript ={https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/conf/httpd.conf"
+	        SetScript = {
+	        	$source = "https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/conf/httpd.conf"
 	            $dest = "C:\Apache24\conf\httpd.conf"
 	            Invoke-WebRequest $source -OutFile $dest
 	        }
