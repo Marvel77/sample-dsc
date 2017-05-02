@@ -42,7 +42,24 @@ Configuration InstallApachePhp
 		    Destination = "C:\"
 		    DependsOn = "[Script]DownloadApacheHttpd"
 		} 
-	    
-
+		Script DownloadPHP
+	    {
+	        TestScript = {
+	            Test-Path "C:\WindowsAzure\php-5.6.30-Win32-VC11-x64.zip"
+	        }
+	        SetScript ={
+	            $source = "http://windows.php.net/downloads/releases/php-5.6.30-Win32-VC11-x64.zip"
+	            $dest = "C:\WindowsAzure\php-5.6.30-Win32-VC11-x64.zip"
+	            Invoke-WebRequest $source -OutFile $dest
+	        }
+	        GetScript = {@{Result = "DownloadPHP"}}
+	        DependsOn = "[Archive]UnzipApacheHttpd"
+	    }
+	    Archive UnzipPHP{
+		    Ensure = "Present"  
+		    Path = "C:\WindowsAzure\php-5.6.30-Win32-VC11-x64.zip"
+		    Destination = "C:\"
+		    DependsOn = "[Script]DownloadPHP"
+		}   
 	}
 }
