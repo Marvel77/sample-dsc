@@ -76,12 +76,31 @@ Configuration InstallApachePhp
 	    }
 	    File OverwriteHttpdConf
         {
-            Ensure = "Present"
+            Ensure = "Absent"
             SourcePath = "C:\WindowsAzure\httpd.conf"
             DestinationPath = "C:\Apache24\conf\httpd.conf"
             Force = $true
-            MatchSource = $true
             DependsOn = "[Script]DownloadHttpdConf"
+        }
+        Script DownloadPHPini
+	    {
+	        TestScript = {
+	            Test-Path "C:\WindowsAzure\php.ini"
+	        }
+	        SetScript = {
+	        	$source = "https://raw.githubusercontent.com/Marvel77/sample-dsc/master/templates/sugarcrmss/conf/php.ini"
+	            $dest = "C:\WindowsAzure\php.ini"
+	            Invoke-WebRequest $source -OutFile $dest
+	        }
+	        GetScript = {@{Result = "DownloadPHPini"}}
+	        DependsOn = "[File]OverwriteHttpdConf"
+	    }
+	    File CopyPHPini
+        {
+            Ensure = "Present"
+            SourcePath = "C:\WindowsAzure\httpd.conf"
+            DestinationPath = "C:\php\php.ini"
+            DependsOn = "[Script]DownloadPHPini"
         }
 	}
 }
