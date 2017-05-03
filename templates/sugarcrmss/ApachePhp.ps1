@@ -136,5 +136,13 @@ Configuration InstallApachePhp
             }
             DependsOn = "[Script]InstallApache"
         }
+        Environment AddApachePHPtoPath
+        {
+            Ensure = "Present"
+            Name = "PATH"
+            Value = ";c:\php;c:\apache24;c:\apache24\bin;"
+            Path = $true
+            DependsOn = "[Script]StartApache"
+        }
 	}
 }
