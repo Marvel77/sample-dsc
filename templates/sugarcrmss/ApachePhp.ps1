@@ -102,5 +102,22 @@ Configuration InstallApachePhp
             DestinationPath = "C:\php\php.ini"
             DependsOn = "[Script]DownloadPHPini"
         }
+        Script InstallApache
+        {
+            TestScript = {
+                if(Get-Service | Where-Object {$_.Name -eq "Apache2.4"}) {
+                    $true
+                } else {
+                    $false
+                }
+            }
+            SetScript = {
+                $output = Invoke-Expression "C:\Apache24\bin\httpd.exe -k install 2>&1"
+            }
+            GetScript = {
+                Get-Service | Where-Object {$_.Name -eq "Apache2.4"}
+            }
+            DependsOn = "[File]CopyPHPini"
+        }
 	}
 }
