@@ -119,5 +119,22 @@ Configuration InstallApachePhp
             }
             DependsOn = "[File]CopyPHPini"
         }
+        Script StartApache
+        {
+            TestScript = {
+                if(netstat -na | findstr ":80" | findstr "LISTENING") {
+                    $true
+                } else {
+                    $false
+                }
+            }
+            SetScript = {
+                $output = Invoke-Expression "C:\Apache24\bin\httpd.exe -k start"
+            }
+            GetScript = {
+                Get-Service | Where-Object {$_.Name -eq "Apache2.4"}
+            }
+            DependsOn = "[Script]InstallApache"
+        }
 	}
 }
