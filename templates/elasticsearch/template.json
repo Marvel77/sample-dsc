@@ -82,7 +82,7 @@
       "sku": "16.04-LTS",
       "version": "latest"
     },
-    "elasticSetupScriptUrl": "[concat(parameters('_artifactsLocation'), '/elasticsearch-vmss/install-elasticsearch.sh', parameters('_artifactsLocationSasToken'))]",
+    "elasticSetupScriptUrl": "[concat('https://raw.githubusercontent.com/marvel77/sample-dsc/master/templates/elasticsearch/install-elasticsearch.sh', parameters('_artifactsLocationSasToken'))]",
     "diskSetupScriptUrl": "[concat(parameters('_artifactsLocation'), '/shared_scripts/ubuntu/vm-disk-utils-0.1.sh', parameters('_artifactsLocationSasToken'))]"
   },
   "resources": [
